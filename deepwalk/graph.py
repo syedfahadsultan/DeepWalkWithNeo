@@ -276,8 +276,8 @@ def write_to_neo(keyedVectorEmbeddings):
 
   subgraph = None
   for node in nodes:
-    emb = keyedVectorEmbeddings[node['id']]
-    node['embedding'] = emb
+    emb = list(keyedVectorEmbeddings[node['id']])
+    node['embedding'] = str(emb)
     subgraph = subgraph | node if subgraph is not None else node
 
   graph.push(subgraph)

@@ -252,6 +252,36 @@ def load_edgelist(file_, undirected=True):
   return G
 
 
+import py2neo 
+from py2neo.database import Graph as NeoGraph
+def load_neo(undirected=True):
+  G = Graph()
+  graph = NeoGraph()
+  rels = list(graph.match())
+  for rel in rels:
+    x, y = int(rel.start_node['id']), int(rel.end_node['id'])
+    G[x].append(y)
+    if undirected:
+      G[y].append(x)
+
+  G.make_consistent()
+  print("Number of nodes: %s, Number of edges: %s" % \
+    (G.number_of_nodes(), G.number_of_edges()))
+  return G
+
+def write_to_neo(keyedVectorEmbeddings):
+  graph = NeoGraph()
+
+  nodes = list(graph.nodes.match())
+
+  subgraph = None
+  for node in nodes:
+    emb = keyedVectorEmbeddings[node['id']]
+    node['embedding'] = emb
+    subgraph = subgraph | node if subgraph is not None else node
+
+  graph.push(subgraph)
+
 def load_matfile(file_, variable_name="network", undirected=True):
   mat_varables = loadmat(file_)
   mat_matrix = mat_varables[variable_name]

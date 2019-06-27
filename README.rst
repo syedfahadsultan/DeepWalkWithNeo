@@ -1,3 +1,11 @@
+
+Using with Neo: 
+1. clone repo
+2. `cd deepwalk`
+3. `pip install -r requirements.txt`
+3. `python setup.py install`
+4. deepwalk --format neo
+
 ===============================
 DeepWalk
 ===============================

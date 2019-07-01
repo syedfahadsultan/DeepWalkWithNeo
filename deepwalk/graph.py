@@ -259,7 +259,7 @@ def load_neo(undirected=True):
   graph = NeoGraph()
   rels = list(graph.match())
   for rel in rels:
-    x, y = int(rel.start_node['id']), int(rel.end_node['id'])
+    x, y = int(rel.start_node.identity), int(rel.end_node.identity)
     G[x].append(y)
     if undirected:
       G[y].append(x)
@@ -276,7 +276,7 @@ def write_to_neo(keyedVectorEmbeddings):
 
   subgraph = None
   for node in nodes:
-    emb = list(keyedVectorEmbeddings[node['id']])
+    emb = list(keyedVectorEmbeddings[str(node.identity)])
     node['embedding'] = str(emb)
     subgraph = subgraph | node if subgraph is not None else node
 
